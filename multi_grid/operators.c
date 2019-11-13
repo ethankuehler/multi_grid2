@@ -44,15 +44,11 @@ void reduce(const float* f_in, float* f_out, N_len Nlen) {
     for (i = 1; i < Ni - 1; i += 2) {
         for (j = 1; j < Nj - 1; j += 2) {
             for (k = 1; k < Nk - 1; k += 2) {
+                int n = loc(i, j, k, Nlen);
+                int nc = loc(i/2, j/2, k/2, Nclen);
                 //taking the avg of the closest points on fine and mapping to the coarse grid.
-                f_out[loc(i/2, j/2, k/2, Nclen)] =
-                        (f_in[loc(i, j, k, Nlen)] +
-                         f_in[loc(i + 1, j, k, Nlen)] +
-                         f_in[loc(i - 1, j, k, Nlen)] +
-                         f_in[loc(i, j + 1, k, Nlen)] +
-                         f_in[loc(i, j - 1, k, Nlen)] +
-                         f_in[loc(i, j, k + 1, Nlen)] +
-                         f_in[loc(i, j, k - 1, Nlen)])/7;
+                f_out[nc] =
+                        (f_in[n] + f_in[n+Nk*Nj] + f_in[n-Nk*Nj] + f_in[n+Nk] + f_in[n-Nk] + f_in[n+k] + f_in[n-k])/7;
             }
         }
     }
@@ -74,13 +70,8 @@ void residual(const float* f, const float* u, float* r, N_len Nlen, float dxs) {
         for (j = 1; j < Nj - 1; j++) {
             for (k = 1; k < Nk - 1; k++) {
                 int n = loc(i, j, k, Nlen);
-                int left    = loc(i, j, k + 1, Nlen);
-                int right   = loc(i, j, k - 1, Nlen);
-                int forward = loc(i, j + 1, k, Nlen);
-                int back    = loc(i, j - 1, k, Nlen);
-                int up      = loc(i + 1, j, k, Nlen);
-                int down    = loc(i - 1, j, k, Nlen);
-                r[n] = f[n] - (u[down] + u[back] + u[right] + -6*u[n] + u[left] + u[forward] + u[up])/dxs;
+                r[n] = f[n] -
+                        (u[n-Nk*Nj] + u[n-Nk] + u[n-1] + -6*u[n] + u[n+1] + u[n+Nk] + u[n+Nk*Nj])/dxs;
             }
         }
     }

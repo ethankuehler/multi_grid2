@@ -14,13 +14,8 @@ void solver(const float* f, float* u, N_len Nlen, float w, float dxs) {
         for (j = 1; j < Nj - 1; j++) {
             for (k = 1; k < Nk - 1; k++) {
                 int n = loc(i, j, k, Nlen);
-                int left    = loc(i, j, k + 1, Nlen);
-                int right   = loc(i, j, k - 1, Nlen);
-                int forward = loc(i, j + 1, k, Nlen);
-                int back    = loc(i, j - 1, k, Nlen);
-                int up      = loc(i + 1, j, k, Nlen);
-                int down    = loc(i - 1, j, k, Nlen);
-                u[n] = (1 - w)*u[n] + (w/-6)*(f[n]*dxs - (u[down] + u[back] + u[left] + u[right] + u[forward] + u[up]));
+                u[n] = (1 - w)*u[n] +
+                       (w/-6)*(f[n]*dxs -(u[n - Nk*Nj] + u[n - Nk] + u[n - 1] + u[n + 1] + u[n + Nk] + u[n + Nk*Nj]));
             }
         }
     }
