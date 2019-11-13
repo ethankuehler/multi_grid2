@@ -39,7 +39,7 @@ void reduce(const float* f_in, float* f_out, N_len Nlen) {
     int Nj = Nlen.j;
     int Nk = Nlen.k;
     int i, j, k;
-#pragma omp parallel for  private(i, j, k) collapse(3)
+#pragma omp parallel for num_threads(mul_num) private(i, j, k) collapse(3)
     //iterating though all interior points, we move by 2 in order to get to points that mach on the coarser gird.
     for (i = 1; i < Ni - 1; i += 2) {
         for (j = 1; j < Nj - 1; j += 2) {
@@ -65,7 +65,7 @@ void residual(const float* f, const float* u, float* r, N_len Nlen, float dxs) {
     int Nk = Nlen.k;
     //because the outer points are fixed by the boundary conditions, their residual is zero.
     int i, j, k;
-#pragma omp parallel for private(i, j, k) collapse(3)
+#pragma omp parallel for num_threads(mul_num) private(i, j, k) collapse(3)
     for (i = 1; i < Ni - 1; i++) {
         for (j = 1; j < Nj - 1; j++) {
             for (k = 1; k < Nk - 1; k++) {
@@ -108,7 +108,7 @@ void interpolate(const float* f, float* f_out, N_len Nlen, float dx) {
     //middle area and other walls.
     //we only need to do the interior areas as their should be zero
     int i, j, k;
-#pragma omp parallel for private(i, j, k) collapse(3)
+#pragma omp parallel for num_threads(mul_num) private(i, j, k) collapse(3)
     for (i = 0; i < Ni - 2; i += 2) {
         for (j = 0; j < Nj - 2; j += 2) {
             for (k = 0; k < Nk - 2; k += 2) {
