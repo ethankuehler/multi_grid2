@@ -20,45 +20,51 @@ void solve_base(const float* f, float* u, N_len Nlen, float dx) {
 
 
 int main() {
-    int Ni = 513;
-    int Nj = 513;
-    int Nk = 513;
-    N_len Nlen = (N_len){Ni, Nj, Nk};
-    float L = 20;
-    float dx = L/Ni;
-    float dens = 1;
-    float R = 1;
-    float* u = calloc(sizeof(float), length(Nlen));
-    float* u2 = calloc(sizeof(float), length(Nlen));
-    float* f = calloc(sizeof(float), length(Nlen));
+    for(int M = 8; M <=10; M++) {
+        int Ni = pow(2,M) + 1;
+        int Nj = pow(2,M) + 1;
+        int Nk = pow(2,M) + 1;
+        N_len Nlen = (N_len) {Ni, Nj, Nk};
+        float L = 20;
+        float dx = L / Ni;
+        float dens = 1;
+        float R = 1;
+        float *u = calloc(sizeof(float), length(Nlen));
+        float *u2 = calloc(sizeof(float), length(Nlen));
+        float *f = calloc(sizeof(float), length(Nlen));
 
-    //dose the initial conditions and stuff
-    //its not really important what it dose
-    inital(u, u2, f, dens, R, Nlen, L, dx, dx);
+        //dose the initial conditions and stuff
+        //its not really important what it dose
+        printf("This test is on a {%i, %i, %i} grid\n", Nlen.i, Nlen.j, Nlen.k);
+        inital(u, u2, f, dens, R, Nlen, L, dx, dx);
 
 
-    //printf("number of iters: %d\n", iters*6);
-    //tSolve(f, u, Nlen, 50, 1.9, dx);
-    //save_gird("data2.txt", u, length(Nlen));
+        //printf("number of iters: %d\n", iters*6);
+        //tSolve(f, u, Nlen, 50, 1.9, dx);
+        //save_gird("data2.txt", u, length(Nlen));
 
-    double total = 0;
-    double times = 1;
+        double total = 0;
+        double times = 1;
 
-    funcs_args arg = (funcs_args){solve_top, solve_coarse, solve_base};
-    printf("starting...\n");
-    for(int i = 0; i < times; i++) {
-        double start = omp_get_wtime();
-        multi(f, u2, Nlen, dx, arg, true); //muti call
-        double end = omp_get_wtime();
-        total += end - start;
-        printf("time taken for multi was %f\n", end - start);
+        funcs_args arg = (funcs_args) {solve_top, solve_coarse, solve_base};
+        printf("starting...\n");
+        for (int i = 0; i < times; i++) {
+            double start = omp_get_wtime();
+            multi(f, u2, Nlen, dx, arg, true); //muti call
+            double end = omp_get_wtime();
+            total += end - start;
+            printf("time taken for multi was %f\n", end - start);
+        }
+        printf("avg time taken for multi was %f\n", total / times);
+
+
+        //dose all the output
+        //save_gird("data3.txt", u2, length(Nlen));
+        data(u, u2, f, Nlen, dx, L);
+        free(u);
+        free(u2);
+        free(f);
     }
-    printf("avg time taken for multi was %f\n", total/times);
-
-
-    //dose all the output
-    //save_gird("data3.txt", u2, length(Nlen));
-    data(u, u2, f, Nlen, dx, L);
 
     return 0;
 }
