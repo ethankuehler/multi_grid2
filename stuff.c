@@ -103,8 +103,8 @@ void data(float* u, float* u2, float* f, N_len Nlen, float dx, float L) {
     printf("%i\n", loc( bruh.i, bruh.j, bruh.k, Nlen));
 
 
-    save_gird("f.txt", f, length(Nlen));
-    save_params("params.txt", 9, (double) Nlen.i, (double) Nlen.j, (double)Nlen.k, L);
+    //save_gird("f.txt", f, length(Nlen));
+    //save_params("params.txt", 9, (double) Nlen.i, (double) Nlen.j, (double)Nlen.k, L);
 
 }
 
@@ -172,7 +172,7 @@ void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, floa
         }
     }
     printf("dx = %f\n", dx);
-    save_gird("data.txt", u, length(Nlen));
+    //save_gird("data.txt", u, length(Nlen));
 
     //setting up the correct solution
 #pragma omp parallel for private(i, j, k) collapse(3)

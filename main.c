@@ -20,9 +20,9 @@ void solve_base(const float* f, float* u, N_len Nlen, float dx) {
 
 
 int main() {
-    int Ni = 257;
-    int Nj = 257;
-    int Nk = 257;
+    int Ni = 513;
+    int Nj = 513;
+    int Nk = 513;
     N_len Nlen = (N_len){Ni, Nj, Nk};
     float L = 20;
     float dx = L/Ni;
@@ -38,13 +38,14 @@ int main() {
 
 
     //printf("number of iters: %d\n", iters*6);
-    tSolve(f, u, Nlen, 50, 1.9, dx);
-    save_gird("data2.txt", u, length(Nlen));
+    //tSolve(f, u, Nlen, 50, 1.9, dx);
+    //save_gird("data2.txt", u, length(Nlen));
 
     double total = 0;
     double times = 1;
 
     funcs_args arg = (funcs_args){solve_top, solve_coarse, solve_base};
+    printf("starting...\n");
     for(int i = 0; i < times; i++) {
         double start = omp_get_wtime();
         multi(f, u2, Nlen, dx, arg, true); //muti call
@@ -53,11 +54,10 @@ int main() {
         printf("time taken for multi was %f\n", end - start);
     }
     printf("avg time taken for multi was %f\n", total/times);
-    //tSolve(f, u2, (N_len){N, N, N}, 50, w, dx);
 
 
     //dose all the output
-    save_gird("data3.txt", u2, length(Nlen));
+    //save_gird("data3.txt", u2, length(Nlen));
     data(u, u2, f, Nlen, dx, L);
 
     return 0;

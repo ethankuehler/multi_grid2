@@ -9,7 +9,7 @@ void solver(const float* f, float* u, N_len Nlen, float w, float dxs) {
     int Nj = Nlen.j;
     int Nk = Nlen.k;
     int i, j, k;
-#pragma omp parallel for schedule(auto) shared(u, f, Nlen, w, dxs) private(i, j, k) collapse(1)
+#pragma omp parallel for num_threads(mul_num) schedule(auto) shared(u, f, Nlen, w, dxs) private(i, j, k) collapse(1)
     for (i = 1; i < Ni - 1; i++) {
         for (j = 1; j < Nj - 1; j++) {
             for (k = 1; k < Nk - 1; k++) {
