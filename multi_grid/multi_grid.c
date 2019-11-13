@@ -14,8 +14,8 @@ int loc(int i, int j, int k, N_len Nlen) {
     int Ni = Nlen.i;
     int Nj = Nlen.j;
     int Nk = Nlen.k;
-    assert(i*Nk*Nj + j*Nk + k < Ni*Nj*Nk);
-    return i*Nk*Nj + j*Nk + k;
+    assert(Nk*(Nj*i + j) + k < Ni*Nj*Nk);
+    return Nk*(Nj*i + j) + k;
 }
 
 /*
