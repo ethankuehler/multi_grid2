@@ -39,10 +39,6 @@ int main() {
         inital(u, u2, f, dens, R, Nlen, L, dx, dx);
 
 
-        //printf("number of iters: %d\n", iters*6);
-        //tSolve(f, u, Nlen, 50, 1.9, dx);
-        //save_gird("data2.txt", u, length(Nlen));
-
         double total = 0;
         double times = 1;
 
@@ -59,11 +55,11 @@ int main() {
 
 
         //dose all the output
-        //save_gird("data3.txt", u2, length(Nlen));
         data(u, u2, f, Nlen, dx, L);
         free(u);
         free(u2);
         free(f);
+        printf(".................\n");
     }
 
     return 0;
