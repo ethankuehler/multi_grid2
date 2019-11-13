@@ -41,8 +41,8 @@ int main() {
     tSolve(f, u, Nlen, 50, 1.9, dx);
     save_gird("data2.txt", u, length(Nlen));
 
-    float total = 0;
-    float times = 1;
+    double total = 0;
+    double times = 1;
 
     funcs_args arg = (funcs_args){solve_top, solve_coarse, solve_base};
     for(int i = 0; i < times; i++) {

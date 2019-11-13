@@ -109,22 +109,24 @@ void data(float* u, float* u2, float* f, N_len Nlen, float dx, float L) {
 }
 
 void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, float L, float dx, float shift) {
-    float x_mid, y_mid, z_mid;
-    x_mid = Nlen.i/2;
-    y_mid = z_mid = Nlen.j/2;
+    float i_mid, j_mid, k_mid;
+    i_mid = Nlen.i / 2;
+    j_mid = Nlen.j / 2;
+    k_mid = Nlen.k / 2;
 
     int Ni = Nlen.i;
     int Nj = Nlen.j;
     int Nk = Nlen.k;
-    //setting up source function
     int i, j, k;
+
+    //setting up source function
 #pragma omp parallel for private(i, j, k) collapse(3)
     for ( i = 0; i < Ni; i++) {
         for ( j = 0; j < Nj; j++) {
             for ( k = 0; k < Nk; k++) {
-                float x = (i - (x_mid))*dx;
-                float y = (j - (y_mid))*dx;
-                float z = (k - (z_mid))*dx;
+                float x = (i - (i_mid)) * dx;
+                float y = (j - (j_mid)) * dx;
+                float z = (k - (k_mid)) * dx;
                 float rsqrd = (x*x + y*y + z*z);
                 int n = loc(i, j, k, Nlen);
                 if (rsqrd < 1) {
@@ -136,7 +138,8 @@ void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, floa
         }
     }
 
-    float m = 0;
+    //calculating the total mass of the of the system
+    double m = 0;
 #pragma omp parallel for private(i, j, k) collapse(3)
     for ( i = 0; i < Ni; i++) {
         for ( j = 0; j < Nj; j++) {
@@ -149,35 +152,36 @@ void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, floa
         }
     }
 
+    //setting up th initial guess with a shift for the multi_grid to solve
     printf("The mass is %f\n", m);
 #pragma omp parallel for private(i, j, k) collapse(3)
     for ( i = 0; i < Ni; i++) {
         for ( j = 0; j < Nj; j++) {
             for ( k = 0; k < Nk; k++) {
-                float x = (i - (x_mid))*dx;
-                float y = (j - (y_mid))*dx;
-                float z = (k - (z_mid))*dx + shift;
+                float x = (i - (i_mid)) * dx;
+                float y = (j - (j_mid)) * dx;
+                float z = (k - (k_mid)) * dx + shift;
                 float rsqrd = x*x + y*y + z*z;
                 int n = loc(i, j, k, Nlen);
                 if (rsqrd < R*R) {
-                    u2[n] = u[n] = -(m/(2*R*R*R))*(3*R*R - rsqrd);
+                    u2[n] = -(m/(2*R*R*R))*(3*R*R - rsqrd);
                 } else {
-                    u2[n] = u[n] = -m/sqrt(rsqrd);
+                    u2[n] = -m/sqrt(rsqrd);
                 }
             }
         }
     }
     printf("dx = %f\n", dx);
     save_gird("data.txt", u, length(Nlen));
-    memcpy(u2, u, length(Nlen)*sizeof(float));
 
+    //setting up the correct solution
 #pragma omp parallel for private(i, j, k) collapse(3)
     for ( i = 0; i < Ni; i++) {
         for ( j = 0; j < Nj; j++) {
             for ( k = 0; k < Nk; k++) {
-                float x = (i - (x_mid))*dx;
-                float y = (j - (y_mid))*dx;
-                float z = (k - (z_mid))*dx;
+                float x = (i - (i_mid)) * dx;
+                float y = (j - (j_mid)) * dx;
+                float z = (k - (k_mid)) * dx;
                 float rsqrd = x*x + y*y + z*z;
                 int n = loc(i, j, k, Nlen);
                 if (rsqrd < R*R) {
