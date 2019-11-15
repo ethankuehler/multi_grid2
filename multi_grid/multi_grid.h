@@ -1,4 +1,3 @@
-
 #ifndef C_SOR_3D_MULTI_GRID_H
 #define C_SOR_3D_MULTI_GRID_H
 

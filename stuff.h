@@ -1,7 +1,3 @@
-//
-// Created by dcrush on 10/29/19.
-//
-
 #ifndef C_SOR_3D_STUFF_H
 #define C_SOR_3D_STUFF_H
 
