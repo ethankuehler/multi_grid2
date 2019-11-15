@@ -3,7 +3,7 @@ project(c_SOR_3d C)
 
 set(CMAKE_C_STANDARD 11)
 
-string(APPEND CMAKE_C_FLAGS "-fopenmp")
+string(APPEND CMAKE_C_FLAGS "-fopenmp -O3")
 add_subdirectory(multi_grid)
 add_subdirectory(tSolver)
 add_executable(c_SOR_3d main.c solve_block.c  stuff.c)

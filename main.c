@@ -40,7 +40,7 @@ int main() {
 
 
         double total = 0;
-        double times = 1;
+        double times = 10;
 
         funcs_args arg = (funcs_args) {solve_top, solve_coarse, solve_base};
         printf("starting...\n");
