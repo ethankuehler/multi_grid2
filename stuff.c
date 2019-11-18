@@ -89,10 +89,26 @@ location_value max_diff(const float* f1, const float* f2, N_len Nlen) {
 }
 
 void data(float* u, float* u2, float* f, N_len Nlen, float dx, float L) {
+    int N = Nlen.i;
+
     printf("error for multi :%lf\n", L2(f, u2, Nlen,dx));
+    printf("error for SOR :%lf\n", L2(f, u, Nlen,dx));
+    printf("avg diff :%f\n", avg_diff(u, u2, Nlen));
+
+    location_value bruh = max_diff(u, u2, Nlen);
+    //save_line("line.txt", u, N/2, N/2, Nlen);
+    //save_line("line3.txt", u2, N/2, N/2, Nlen);
+
+    printf("biggest diff was at {%i, %i, %i} and was %f\n", bruh.i, bruh.j, bruh.k, bruh.f);
+    printf("%i\n", loc( bruh.i, bruh.j, bruh.k, Nlen));
+
+
+    //save_gird("f.txt", f, length(Nlen));
+    //save_params("params.txt", 9, (double) Nlen.i, (double) Nlen.j, (double)Nlen.k, L);
+
 }
 
-void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, float L, float dx, float shift) {
+void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, float L, float dx, float shift, int M) {
     float i_mid, j_mid, k_mid;
     i_mid = Nlen.i / 2;
     j_mid = Nlen.j / 2;
@@ -155,7 +171,10 @@ void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, floa
             }
         }
     }
+    char str[20];
+    sprintf(str, "data_sol_%i.txt", M);
     printf("dx = %f\n", dx);
+    save_gird(str, u, length(Nlen));
 
     //setting up the correct solution
 #pragma omp parallel for private(i, j, k) collapse(3)

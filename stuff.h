@@ -29,6 +29,6 @@ location_value max_diff(const float* f1, const float* f2, N_len Nlen);
 
 void data(float* u, float* u2, float* f, N_len Nlen, float dx, float L);
 
-void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, float L, float dx, float shift);
+void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, float L, float dx, float shift, int M);
 
 #endif //C_SOR_3D_STUFF_H
