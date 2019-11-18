@@ -108,7 +108,7 @@ void data(float* u, float* u2, float* f, N_len Nlen, float dx, float L) {
 
 }
 
-void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, float L, float dx, float shift) {
+void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, float L, float dx, float shift, int M) {
     float i_mid, j_mid, k_mid;
     i_mid = Nlen.i / 2;
     j_mid = Nlen.j / 2;
@@ -171,8 +171,10 @@ void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, floa
             }
         }
     }
+    char str[20];
+    sprintf(str, "data_sol_%i.txt", M);
     printf("dx = %f\n", dx);
-    //save_gird("data.txt", u, length(Nlen));
+    save_gird(str, u, length(Nlen));
 
     //setting up the correct solution
 #pragma omp parallel for private(i, j, k) collapse(3)

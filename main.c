@@ -36,12 +36,13 @@ int main() {
         //dose the initial conditions and stuff
         //its not really important what it dose
         printf("This test is on a {%i, %i, %i} grid\n", Nlen.i, Nlen.j, Nlen.k);
-        inital(u, u2, f, dens, R, Nlen, L, dx, dx);
+        inital(u, u2, f, dens, R, Nlen, L, dx, dx, M);
 
+        char str[20];
+        sprintf(str, "data_sol_%i", M);
 
-        //printf("number of iters: %d\n", iters*6);
-        //tSolve(f, u, Nlen, 50, 1.9, dx);
-        //save_gird("data2.txt", u, length(Nlen));
+        solve(f, u, Nlen, 100, 1.9, dx);
+        save_gird("data2.txt", u, length(Nlen));
 
         double total = 0;
         double times = 1;
@@ -59,7 +60,8 @@ int main() {
 
 
         //dose all the output
-        //save_gird("data3.txt", u2, length(Nlen));
+        sprintf(str, "data_run_%i", M);
+        save_gird(str, u2, length(Nlen));
         data(u, u2, f, Nlen, dx, L);
         free(u);
         free(u2);
