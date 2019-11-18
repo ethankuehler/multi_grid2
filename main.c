@@ -42,7 +42,7 @@ int main() {
         sprintf(str, "data_sol_%i", M);
 
         solve(f, u, Nlen, 100, 1.9, dx);
-        save_gird("data2.txt", u, length(Nlen));
+        save_gird(str, u, length(Nlen));
 
         double total = 0;
         double times = 1;
@@ -60,7 +60,7 @@ int main() {
 
 
         //dose all the output
-        sprintf(str, "data_run_%i", M);
+        sprintf(str, "data_run_%i.txt", M);
         save_gird(str, u2, length(Nlen));
         data(u, u2, f, Nlen, dx, L);
         free(u);
