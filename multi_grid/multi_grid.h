@@ -4,8 +4,6 @@
 
 #include <stdbool.h>
 
-#define mul_num 1
-
 //This struct is used to store the number of girds in each dimensions for a gird.
 typedef struct _N_len {
     int i;
