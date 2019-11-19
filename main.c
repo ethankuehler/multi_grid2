@@ -60,7 +60,7 @@ int main() {
 
 
         //dose all the output
-#if(SAVE_ALL)
+#if(SAVE_ANY)
         sprintf(str, "data_run_%i.txt", M);
         save_gird(str, u2, length(Nlen));
 #endif
