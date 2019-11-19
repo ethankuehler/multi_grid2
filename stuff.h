@@ -8,6 +8,9 @@
 #include <string.h>
 #include "multi_grid/multi_grid.h"
 
+
+#define SAVE_ALL true
+
 typedef struct _location_value {
     int i;
     int j;

@@ -171,10 +171,13 @@ void inital(float* u, float* u2, float* f, float dens, float R, N_len Nlen, floa
             }
         }
     }
+    printf("dx = %f\n", dx);
+
+#if(SAVE_ALL)
     char str[20];
     sprintf(str, "data_inital_%i.txt", M);
-    printf("dx = %f\n", dx);
     save_gird(str, u, length(Nlen));
+#endif
 
     //setting up the correct solution
 #pragma omp parallel for private(i, j, k) collapse(3)

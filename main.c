@@ -39,11 +39,11 @@ int main() {
         inital(u, u2, f, dens, R, Nlen, L, dx, dx, M);
 
         char str[20];
+#if(SAVE_ALL)
         sprintf(str, "data_sol_%i", M);
-
         solve(f, u, Nlen, 100, 1.9, dx);
         save_gird(str, u, length(Nlen));
-
+#endif
         double total = 0;
         double times = 1;
 
@@ -60,8 +60,10 @@ int main() {
 
 
         //dose all the output
+#if(SAVE_ALL)
         sprintf(str, "data_run_%i.txt", M);
         save_gird(str, u2, length(Nlen));
+#endif
         data(u, u2, f, Nlen, dx, L);
         free(u);
         free(u2);
